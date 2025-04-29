@@ -24,7 +24,7 @@ def knapsack_01(values, weights, capacity):
     return total_values, selected_items
 
 
-values = [60, 100, 12]
+values = [60, 100, 120]
 weights = [10, 20, 30]
 capacity = 50
 
