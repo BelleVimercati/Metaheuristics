@@ -1,33 +1,16 @@
-"""Abordagem Construtiva gulosa:
-1. Ordenar os itens com o valor-peso
-2. Selecionar os itens em ordem decrescente, adicionando apenas se couber na mochila.
-Alunos: Marcus Bispo e Isabelle Vimercati
-"""
+def knapsack(capacity, profits, weights):
+    items = [(profits[i], weights[i], round(profits[i]/weights[i], 3)) for i in range(len(weights))]      # Lista de itens (tuplas) com o valor de utilidade
 
+    sortedItems = sorted(items, key = lambda tuple : tuple[2], reverse = True)                  # Lista de itens (tuplas) ordenados pelo valor de utilidade
+    knapsackItems = [0 for i in range(len(items))]                                              # Lista de itens adicionados na mochila
+    knapsackItemsProfit = 0                                                                     # Variável do valor atual da mochila
+    knapsackItemsWeight = 0                                                                     # Variável do peso atual da mochila
 
-def knapsack_01(values, weights, capacity):
-    n = len(values)
-    items = [(i, values[i], weights[i], values[i] / weights[i]) for i in range(n)]
-    items.sort(key= lambda x: x[3], reverse=True)
-
-    total_values = 0
-    total_weights = 0
-    selected_items = []
-
-    for item in items:
-        i , value, weight, _ = item
-        if total_weights + weight <= capacity:
-            selected_items.append((i,value,weight))
-            total_values += value
-            total_weights += weight
-
-    return total_values, selected_items
-
-
-values = [60, 100, 120]
-weights = [10, 20, 30]
-capacity = 50
-
-max_value, selected = knapsack_01(values, weights, capacity)
-print("Valor máximo:", max_value);
-print("Itens selecionados:", selected)
+    for item in range(len(sortedItems)):                                                        # Para cada item da lista ordenada
+        if sortedItems[item][1] <= capacity:                                                    #   Se o peso do item observado for menor que a capacidade atual
+            knapsackItems[item] = 1                                                             #       Adiciona o item na mochila
+            knapsackItemsProfit += sortedItems[item][0]                                         #       Atualiza o valor atual da mochila
+            knapsackItemsWeight += sortedItems[item][1]                                         #       Atualiza o peso atual da mochila
+            capacity -= sortedItems[item][1]                                                    #       Diminui a capacidade atual da mochila
+    
+    return sortedItems, knapsackItems, knapsackItemsProfit, knapsackItemsWeight
