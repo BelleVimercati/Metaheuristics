@@ -14,11 +14,10 @@ with open("items.txt", "r") as f:
         weights.append(w)
         profits.append(pr)
 
+knapsack = k.Knapsack(knapsackCapacity)
+knapsack.calculate(profits, weights)
 
-sortedItems, knapsackItems, knapsackProfit, knapsackWeight = k.knapsack(knapsackCapacity, profits, weights)
-
-
-print(f'Sorted Items: {sortedItems}')
-print(f'Knapsack Items: {knapsackItems}')
-print(f'Knapsack Profit: {knapsackProfit}')
-print(f'Knapsack Weight: {knapsackWeight}\n')
+print(f'Items: {knapsack.getItems()}')
+print(f'Selected items: {knapsack.getSelectedItems()}')
+print(f'Knapsack profit: {knapsack.getKnapsackProfit()}')
+print(f'Knapsack weight: {knapsack.getKnapsackWeight()}')

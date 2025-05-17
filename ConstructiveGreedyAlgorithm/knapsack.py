@@ -1,16 +1,50 @@
-def knapsack(capacity, profits, weights):
-    items = [(profits[i], weights[i], round(profits[i]/weights[i], 3)) for i in range(len(weights))]      # Lista de itens (tuplas) com o valor de utilidade
-
-    sortedItems = sorted(items, key = lambda tuple : tuple[2], reverse = True)                  # Lista de itens (tuplas) ordenados pelo valor de utilidade
-    knapsackItems = [0 for i in range(len(items))]                                              # Lista de itens adicionados na mochila
-    knapsackItemsProfit = 0                                                                     # Variável do valor atual da mochila
-    knapsackItemsWeight = 0                                                                     # Variável do peso atual da mochila
-
-    for item in range(len(sortedItems)):                                                        # Para cada item da lista ordenada
-        if sortedItems[item][1] <= capacity:                                                    #   Se o peso do item observado for menor que a capacidade atual
-            knapsackItems[item] = 1                                                             #       Adiciona o item na mochila
-            knapsackItemsProfit += sortedItems[item][0]                                         #       Atualiza o valor atual da mochila
-            knapsackItemsWeight += sortedItems[item][1]                                         #       Atualiza o peso atual da mochila
-            capacity -= sortedItems[item][1]                                                    #       Diminui a capacidade atual da mochila
+class Knapsack:
+    def __init__(self, capacity):   # Para instanciar uma mochila, precisamos apenas da capacidade dela
+        self.capacity = capacity
     
-    return sortedItems, knapsackItems, knapsackItemsProfit, knapsackItemsWeight
+    def calculate(self, profits, weights):
+        self.putItems(profits, weights)
+        self.sortItems()
+        self.selectItems()
+    
+    def putItems(self, profits, weights):
+        self.items = [(profits[i], weights[i], round(profits[i]/weights[i], 3)) for i in range(len(weights))]
+    
+    def sortItems(self):
+        self.items = sorted(self.items, key = lambda tuple : tuple[2], reverse = True)
+    
+    def selectItems(self):
+        self.selectedItems = [0 for i in range(len(self.items))]
+
+        for item in range(len(self.items)):
+            if self.items[item][1] <= self.capacity:
+                self.selectedItems[item] = 1
+                self.capacity -= self.items[item][1]
+    
+    def getItems(self):
+        try:
+            return self.items
+        except:
+            print('There are no items!')
+    
+    def getSelectedItems(self):
+        try:
+            return self.selectedItems
+        except:
+            print('There are no selected items!')
+    
+    def getKnapsackProfit(self):
+        knapsackProfit = 0
+
+        for item in range(len(self.selectedItems)):
+            knapsackProfit += self.selectedItems[item] * self.items[item][0]
+        
+        return knapsackProfit
+    
+    def getKnapsackWeight(self):
+        knapsackWeight = 0
+
+        for item in range(len(self.selectedItems)):
+            knapsackWeight += self.selectedItems[item] * self.items[item][1]
+        
+        return knapsackWeight
