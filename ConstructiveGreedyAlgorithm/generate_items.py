@@ -2,7 +2,7 @@ from random import randint
 
 #Definição dos parâmetros
 knapsackCapacity = 50
-itemsQuantity = 6
+itemsQuantity = 500
 
 minWeight = 2
 maxWeight = 30
