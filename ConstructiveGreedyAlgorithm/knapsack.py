@@ -2,10 +2,12 @@ import random
 import time as t
 import math
 
+# Criação da classe Mochila, a manipulação dos espaços será feita nos métodos da classe
 class Knapsack:
     def __init__(self, capacity):   # Para instanciar uma mochila, precisamos apenas da capacidade dela
         self.capacity = capacity
     
+    #Método do Simulated Annealing
     def simulatedAnnealing(self, profits, weights, time, temperature, coolingRate):
         self.calculate(profits, weights)
         
@@ -15,7 +17,7 @@ class Knapsack:
         s0 = self.selectedItems.copy()
         best = s0.copy()
 
-        while (time > t.time() - start):
+        while (time > t.time() - start): #definimos um tempo mínimo para que o Simulated Annealing permaneça rodando
             s1 = self.newSolution(s0)
 
             s0Profit = self.evaluate(s0)
@@ -39,9 +41,11 @@ class Knapsack:
     def putItems(self, profits, weights):
         self.items = [(profits[i], weights[i], round(profits[i]/weights[i], 3)) for i in range(len(weights))]
     
+    # Ordena os itens de acordo com o valor de valor/peso
     def sortItems(self):
         self.items = sorted(self.items, key = lambda tuple : tuple[2], reverse = True)
     
+    # Seleciona os itens caso eles caibam dentro da capacidade da mochila
     def selectItems(self):
         self.selectedItems = [0 for i in range(len(self.items))]
         
@@ -52,10 +56,12 @@ class Knapsack:
                 self.selectedItems[item] = 1
                 capacity -= self.items[item][1]
     
+    # Método para fazer a (possível) troca de bit de um item da solução
     def newSolution(self, solution):
         newSolution = solution.copy()
 
-        item = random.randint(0, len(newSolution) - 1)
+        item = random.randint(0, len(newSolution) - 1) # A escolha do item é feita de maneira aleatória dentro do tamanho da solução original
+        print(f'item: {item}')
 
         if newSolution[item] == 0:
             newSolution[item] = 1
@@ -64,6 +70,8 @@ class Knapsack:
         
         return newSolution
     
+    """  Método para conferir se a nova solução excede a capacidade da mochila.
+     Se a solução excede ela é descartada e o método retorna 0, se não, retorna o valor total """
     def evaluate(self, solution):
         profit = 0
         weight = 0
@@ -77,6 +85,8 @@ class Knapsack:
         else:
             return profit
     
+    """ Método temperatura sempre aceita a nova solução se o valor for maior que o anterior.
+     Caso contrário, ela faz o calculo de probabilidade de aceite usando a temperatura ( Essa probabilidade permite que soluções piores sejam aceitas, especialmente em temperaturas mais altas.) """
     def temperatureAcceptance(self, s0Profit, s1Profit, temperature):
         if s1Profit > s0Profit:
             return 1.0
