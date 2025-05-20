@@ -17,7 +17,7 @@ class Knapsack:
         s0 = self.selectedItems.copy()
         best = s0.copy()
 
-        while (time > t.time() - start): #definimos um tempo mínimo para que o Simulated Annealing permaneça rodando
+        while (time > t.time() - start): #definimos um tempo que o Simulated Annealing permanecerá rodando
             s1 = self.newSolution(s0)
 
             s0Profit = self.evaluate(s0)
